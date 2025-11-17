@@ -8,7 +8,7 @@ The website is hosted on **GitHub Pages**:
 
 ---
 
-## 🎯 Purpose of This Project
+## Purpose of This Project
 
 During my machine learning course, I realized that many algorithms are easy to understand theoretically but much harder to **visualize**.  
 For example, in algorithms like **K-Means Clustering**, concepts such as centroid initialization, distance calculation, and iterative updates become far clearer when seen visually.
@@ -44,7 +44,7 @@ The first implemented algorithm is:
 
 ---
 
-## 🚀 Future Plans
+## ➤ Future Plans
 
 As I progress through my ML course, I will continue adding more algorithms, such as:
 
@@ -61,7 +61,7 @@ This repository will grow into a complete **ML Algorithm Interactive Learning Hu
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
 The project is entirely client-side and hosted using **GitHub Pages**, making it easy for anyone to access and explore directly from their browser.
 
