@@ -8,10 +8,10 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
         }
         
         .gradient-bg {
@@ -52,13 +52,13 @@
         }
         
         .main-container {
-            height: calc(100vh - 120px);
-            overflow: hidden;
+            padding-bottom: 2rem;
         }
         
         .sidebar {
-            height: 100%;
+            max-height: calc(100vh - 140px);
             overflow-y: auto;
+            overflow-x: hidden;
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
         }
@@ -77,7 +77,8 @@
         }
         
         .plot-container {
-            height: 100%;
+            height: calc(100vh - 160px);
+            min-height: 600px;
             position: relative;
         }
         
@@ -88,9 +89,9 @@
             z-index: 1000;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 10px;
-            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
@@ -192,6 +193,169 @@
             background-color: #d1fae5;
             color: #065f46;
         }
+        
+        /* Algorithm Panel Styles - Collapsible Sidebar */
+        .algorithm-sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 420px;
+            background: white;
+            box-shadow: -4px 0 12px rgba(0,0,0,0.15);
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .algorithm-sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .algorithm-toggle-btn {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.2rem 0.6rem;
+            border-radius: 8px 0 0 8px;
+            cursor: pointer;
+            z-index: 1999;
+            box-shadow: -3px 3px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-weight: 700;
+            font-size: 0.875rem;
+            letter-spacing: 1px;
+        }
+        
+        .algorithm-toggle-btn:hover {
+            right: 3px;
+            box-shadow: -5px 5px 15px rgba(102, 126, 234, 0.5);
+        }
+        
+        .algorithm-toggle-btn.hidden {
+            transform: translateX(420px) translateY(-50%);
+        }
+        
+        .algorithm-panel {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+        
+        .algorithm-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .algorithm-panel::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .algorithm-panel::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .algorithm-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .algorithm-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+        
+        .algorithm-close-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: rotate(90deg);
+        }
+        
+        .algorithm-step {
+            padding: 0.4rem 0.6rem;
+            margin: 0.2rem 0;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .algorithm-step.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(102, 126, 234, 0.05) 100%);
+            border-left-color: #667eea;
+            font-weight: 600;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+        
+        .algorithm-step.completed {
+            opacity: 0.6;
+        }
+        
+        .algo-indent-1 { padding-left: 1rem; }
+        .algo-indent-2 { padding-left: 2rem; }
+        .algo-indent-3 { padding-left: 3rem; }
+        
+        .algo-keyword {
+            color: #9333ea;
+            font-weight: 600;
+        }
+        
+        .algo-comment {
+            color: #6b7280;
+            font-style: italic;
+        }
+        
+        .algo-variable {
+            color: #059669;
+        }
+        
+        /* Layout helpers */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 1.5rem;
+            width: 100%;
+        }
+        
+        @media (max-width: 1280px) {
+            .content-wrapper {
+                grid-template-columns: 220px 1fr;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 200px 1fr;
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -209,9 +373,9 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-6 py-4 main-container">
-        <div class="grid grid-cols-12 gap-4 h-full">
+        <div class="content-wrapper">
             <!-- Left Sidebar - Compact Controls -->
-            <div class="col-span-3 sidebar space-y-3">
+            <div class="sidebar space-y-3">
                 <!-- Dataset Controls -->
                 <div class="control-section">
                     <h3 class="text-sm font-bold text-gray-800 mb-3">Dataset</h3>
@@ -310,7 +474,7 @@
                         <label class="block text-xs font-semibold text-gray-700 mb-1">
                             Speed: <span id="speedValue" class="text-purple-600">500ms</span>
                         </label>
-                        <input type="range" id="animSpeed" min="100" max="2000" value="500" step="100"
+                        <input type="range" id="animSpeed" min="100" max="5000" value="500" step="100"
                                class="w-full accent-purple-600">
                     </div>
                 </div>
@@ -368,9 +532,9 @@
                 </div>
             </div>
 
-            <!-- Right Side - Large Visualization -->
-            <div class="col-span-9 h-full">
-                <div class="plot-container bg-white rounded-lg shadow-lg p-4 h-full">
+            <!-- Center - Large Visualization -->
+            <div class="w-full">
+                <div class="plot-container bg-white rounded-lg shadow-lg p-4">
                     <button id="toggle3DBtn" class="floating-3d-btn">
                         Switch to 3D
                     </button>
@@ -379,6 +543,107 @@
             </div>
         </div>
     </main>
+    
+    <!-- Collapsible Algorithm Sidebar -->
+    <div class="algorithm-toggle-btn" id="algorithmToggle">
+        PSEUDO-CODE
+    </div>
+    
+    <div class="algorithm-sidebar" id="algorithmSidebar">
+        <div class="algorithm-header">
+            <h3 class="text-base font-bold font-sans">K-Means Algorithm</h3>
+            <button class="algorithm-close-btn" id="algorithmClose">&times;</button>
+        </div>
+        <div class="algorithm-panel">
+            <div class="space-y-1">
+                        <div id="step-0" class="algorithm-step">
+                            <span class="algo-keyword">function</span> <span class="algo-variable">KMeans</span>(data, k)
+                        </div>
+                        
+                        <div id="step-1" class="algorithm-step algo-indent-1">
+                            <span class="algo-comment">// Initialize k centroids</span>
+                        </div>
+                        <div id="step-2" class="algorithm-step algo-indent-1">
+                            centroids ← <span class="algo-keyword">initialize</span>(data, k)
+                        </div>
+                        
+                        <div id="step-3" class="algorithm-step algo-indent-1">
+                            <span class="algo-keyword">repeat</span>
+                        </div>
+                        
+                        <div id="step-4" class="algorithm-step algo-indent-2">
+                            <span class="algo-comment">// Assignment Step</span>
+                        </div>
+                        <div id="step-5" class="algorithm-step algo-indent-2">
+                            <span class="algo-keyword">for each</span> point <span class="algo-keyword">in</span> data
+                        </div>
+                        <div id="step-6" class="algorithm-step algo-indent-3">
+                            distances ← compute_distances(point, centroids)
+                        </div>
+                        <div id="step-7" class="algorithm-step algo-indent-3">
+                            assign point to nearest centroid
+                        </div>
+                        <div id="step-8" class="algorithm-step algo-indent-2">
+                            <span class="algo-keyword">end for</span>
+                        </div>
+                        
+                        <div id="step-9" class="algorithm-step algo-indent-2">
+                            <span class="algo-comment">// Update Step</span>
+                        </div>
+                        <div id="step-10" class="algorithm-step algo-indent-2">
+                            old_centroids ← centroids
+                        </div>
+                        <div id="step-11" class="algorithm-step algo-indent-2">
+                            <span class="algo-keyword">for each</span> cluster <span class="algo-keyword">in</span> k
+                        </div>
+                        <div id="step-12" class="algorithm-step algo-indent-3">
+                            centroids[cluster] ← mean(assigned_points)
+                        </div>
+                        <div id="step-13" class="algorithm-step algo-indent-2">
+                            <span class="algo-keyword">end for</span>
+                        </div>
+                        
+                        <div id="step-14" class="algorithm-step algo-indent-2">
+                            <span class="algo-comment">// Check convergence</span>
+                        </div>
+                        <div id="step-15" class="algorithm-step algo-indent-2">
+                            <span class="algo-keyword">if</span> centroids == old_centroids
+                        </div>
+                        <div id="step-16" class="algorithm-step algo-indent-3">
+                            <span class="algo-keyword">break</span> <span class="algo-comment">// Converged</span>
+                        </div>
+                        <div id="step-17" class="algorithm-step algo-indent-2">
+                            <span class="algo-keyword">end if</span>
+                        </div>
+                        
+                        <div id="step-18" class="algorithm-step algo-indent-1">
+                            <span class="algo-keyword">until</span> convergence
+                        </div>
+                        
+                        <div id="step-19" class="algorithm-step algo-indent-1">
+                            <span class="algo-keyword">return</span> centroids, assignments
+                        </div>
+                        
+                        <div id="step-20" class="algorithm-step">
+                            <span class="algo-keyword">end function</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                        <h4 class="text-xs font-bold text-purple-800 mb-2 font-sans">Complexity</h4>
+                        <div class="text-xs font-sans space-y-1">
+                            <div><strong>Time:</strong> O(n·k·i·d)</div>
+                            <div class="text-gray-600 text-[0.65rem]">
+                                n=points, k=clusters<br/>
+                                i=iterations, d=dimensions
+                            </div>
+                            <div class="mt-2"><strong>Space:</strong> O(n + k)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="kmeans.js"></script>
 </body>

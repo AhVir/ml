@@ -127,31 +127,39 @@ class KMeans {
 
         this.dataPoints = [];
 
-        // Generate clusters with some separation
-        const numClusters = Math.min(5,this.k);
+        // Generate more dispersed clusters across the entire space
+        const numClusters = Math.min(6,this.k + 1);
         const pointsPerCluster = Math.floor(numPoints / numClusters);
 
         for(let i = 0; i < numClusters; i++) {
-            const centerX = (this.seededRandom() - 0.5) * 16;
-            const centerY = (this.seededRandom() - 0.5) * 16;
+            // Spread centers across wider area (-10 to 10 range)
+            const centerX = (this.seededRandom() - 0.5) * 20;
+            const centerY = (this.seededRandom() - 0.5) * 20;
 
             for(let j = 0; j < pointsPerCluster; j++) {
                 const angle = this.seededRandom() * 2 * Math.PI;
-                const radius = this.seededRandom() * 1.5;
+                // Larger radius for more spread (2.5 instead of 1.5)
+                const radius = this.seededRandom() * 2.5;
                 const x = centerX + radius * Math.cos(angle);
                 const y = centerY + radius * Math.sin(angle);
                 this.dataPoints.push({x,y});
             }
         }
 
-        // Add remaining points randomly
+        // Add noise points scattered randomly across the entire space
+        const noisePoints = Math.floor(numPoints * 0.15); // 15% noise
         const remaining = numPoints - (pointsPerCluster * numClusters);
-        for(let i = 0; i < remaining; i++) {
+        const totalExtra = remaining + noisePoints;
+
+        for(let i = 0; i < totalExtra; i++) {
             this.dataPoints.push({
-                x: (this.seededRandom() - 0.5) * 16,
-                y: (this.seededRandom() - 0.5) * 16
+                x: (this.seededRandom() - 0.5) * 22, // Even wider range
+                y: (this.seededRandom() - 0.5) * 22
             });
         }
+
+        // Trim to exact count if we added too many
+        this.dataPoints = this.dataPoints.slice(0,numPoints);
 
         this.updateStatusDisplay();
         this.plotData();
@@ -676,12 +684,69 @@ class KMeans {
         this.assignments = new Array(this.dataPoints.length).fill(-1);
 
         // Initialize centroids
+        this.highlightAlgorithmStep([1,2]); // Show initialization step
         this.initializeCentroids();
 
         this.updateButtonStates();
         this.updateStatusDisplay();
         this.logMessage('Algorithm started - Centroids initialized','success');
         this.plotData();
+    }
+
+    // Algorithm step highlighting methods
+    highlightAlgorithmStep(stepIds) {
+        // Clear all previous highlights
+        for(let i = 0; i <= 20; i++) {
+            const step = document.getElementById(`step-${i}`);
+            if(step) {
+                step.classList.remove('active');
+            }
+        }
+
+        // Highlight current step(s)
+        if(Array.isArray(stepIds)) {
+            stepIds.forEach(id => {
+                const step = document.getElementById(`step-${id}`);
+                if(step) {
+                    step.classList.add('active');
+                    // Scroll into view smoothly
+                    step.scrollIntoView({behavior: 'smooth',block: 'center'});
+                }
+            });
+        } else {
+            const step = document.getElementById(`step-${stepIds}`);
+            if(step) {
+                step.classList.add('active');
+                step.scrollIntoView({behavior: 'smooth',block: 'center'});
+            }
+        }
+    }
+
+    markStepCompleted(stepIds) {
+        if(Array.isArray(stepIds)) {
+            stepIds.forEach(id => {
+                const step = document.getElementById(`step-${id}`);
+                if(step) {
+                    step.classList.remove('active');
+                    step.classList.add('completed');
+                }
+            });
+        } else {
+            const step = document.getElementById(`step-${stepIds}`);
+            if(step) {
+                step.classList.remove('active');
+                step.classList.add('completed');
+            }
+        }
+    }
+
+    resetAlgorithmHighlights() {
+        for(let i = 0; i <= 20; i++) {
+            const step = document.getElementById(`step-${i}`);
+            if(step) {
+                step.classList.remove('active','completed');
+            }
+        }
     }
 
     initializeCentroids() {
@@ -819,27 +884,50 @@ class KMeans {
 
         this.iteration++;
 
-        // Step 1: Assign points to nearest centroids
-        this.assignPointsToClusters();
-        this.plotData();
+        // Highlight repeat loop start
+        this.highlightAlgorithmStep(3);
 
         setTimeout(() => {
-            // Step 2: Update centroids
-            const changed = this.updateCentroids();
-            this.updateCentroidDisplay();
+            // Step 1: Assignment - Highlight assignment step
+            this.highlightAlgorithmStep([4,5,6,7]);
+            this.assignPointsToClusters();
             this.plotData();
 
-            if(this.hasConverged) {
-                this.logMessage(`Algorithm converged at iteration ${this.iteration}!`,'success');
-                this.algorithmStatusSpan.innerHTML = '<span class="convergence-badge">Converged</span>';
-                this.updateButtonStates();
-            } else {
-                this.logMessage(`Iteration ${this.iteration} completed - Centroids updated`,'info');
-            }
+            setTimeout(() => {
+                // Mark assignment completed
+                this.markStepCompleted([4,5,6,7,8]);
 
-            this.updateStatusDisplay();
-            this.updateIterationSlider();
-        },this.animationSpeed / 2);
+                // Step 2: Update centroids - Highlight update step
+                this.highlightAlgorithmStep([9,10,11,12]);
+
+                setTimeout(() => {
+                    const changed = this.updateCentroids();
+                    this.updateCentroidDisplay();
+                    this.plotData();
+
+                    // Mark update completed
+                    this.markStepCompleted([9,10,11,12,13]);
+
+                    // Check convergence
+                    this.highlightAlgorithmStep([14,15]);
+
+                    setTimeout(() => {
+                        if(this.hasConverged) {
+                            this.highlightAlgorithmStep([16,19]); // Break and return
+                            this.logMessage(`Algorithm converged at iteration ${this.iteration}!`,'success');
+                            this.algorithmStatusSpan.innerHTML = '<span class="convergence-badge">Converged</span>';
+                            this.updateButtonStates();
+                        } else {
+                            this.highlightAlgorithmStep([17,18]); // Continue loop
+                            this.logMessage(`Iteration ${this.iteration} completed - Centroids updated`,'info');
+                        }
+
+                        this.updateStatusDisplay();
+                        this.updateIterationSlider();
+                    },this.animationSpeed / 4);
+                },this.animationSpeed / 4);
+            },this.animationSpeed / 2);
+        },this.animationSpeed / 4);
     }
 
     async runToConvergence() {
@@ -871,6 +959,9 @@ class KMeans {
         this.hasConverged = false;
         this.iterationHistory = []; // Clear history
         this.centroidHistory = []; // Clear centroid trace
+
+        // Reset algorithm highlights
+        this.resetAlgorithmHighlights();
 
         this.updateButtonStates();
         this.updateStatusDisplay();
@@ -1156,4 +1247,55 @@ class KMeans {
 document.addEventListener('DOMContentLoaded',() => {
     const kmeans = new KMeans();
     console.log('K-Means Visualizer initialized successfully!');
+
+    // Initialize collapsible algorithm sidebar
+    initializeAlgorithmSidebar();
 });
+
+// Collapsible algorithm sidebar functionality
+function initializeAlgorithmSidebar() {
+    const sidebar = document.getElementById('algorithmSidebar');
+    const toggleBtn = document.getElementById('algorithmToggle');
+    const closeBtn = document.getElementById('algorithmClose');
+
+    if(!sidebar || !toggleBtn || !closeBtn) {
+        console.warn('Algorithm sidebar elements not found');
+        return;
+    }
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        toggleBtn.classList.add('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        toggleBtn.classList.remove('hidden');
+    }
+
+    toggleBtn.addEventListener('click',openSidebar);
+    closeBtn.addEventListener('click',closeSidebar);
+
+    // Only close sidebar when clicking on the overlay/backdrop, not on control buttons
+    document.addEventListener('click',(e) => {
+        // Don't close if clicking inside sidebar, on toggle button, or on any control elements
+        if(sidebar.classList.contains('open') &&
+            !sidebar.contains(e.target) &&
+            e.target !== toggleBtn &&
+            !e.target.closest('button') &&
+            !e.target.closest('input') &&
+            !e.target.closest('select') &&
+            !e.target.closest('textarea') &&
+            !e.target.closest('.control-section') &&
+            !e.target.closest('.plot-container')) {
+            closeSidebar();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown',(e) => {
+        if(e.key === 'Escape' && sidebar.classList.contains('open')) {
+            closeSidebar();
+        }
+    });
+}
