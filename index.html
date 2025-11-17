@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Algorithm Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .algorithm-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-supervised {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .badge-unsupervised {
+            background-color: #fce7f3;
+            color: #9f1239;
+        }
+        
+        .badge-coming-soon {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold mb-4">ML Algorithm Visualizer</h1>
+                <p class="text-xl text-purple-100 mb-6">
+                    Interactive step-by-step visualization of machine learning algorithms
+                </p>
+                <p class="text-lg text-purple-200">
+                    Understand how algorithms work internally through beautiful animations and real-time explanations
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-16">
+        <!-- Introduction Section -->
+        <section class="max-w-4xl mx-auto mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">About This Project</h2>
+            <p class="text-gray-600 text-lg leading-relaxed mb-4">
+                This platform is designed to help students, educators, and ML enthusiasts visualize how machine learning 
+                algorithms work under the hood. Each algorithm has its own interactive page where you can:
+            </p>
+            <ul class="list-disc list-inside text-gray-600 text-lg space-y-2 ml-4">
+                <li>Adjust parameters and see immediate results</li>
+                <li>Step through the algorithm iteration by iteration</li>
+                <li>Watch animated visualizations of the learning process</li>
+                <li>Understand the mathematics behind each step</li>
+            </ul>
+        </section>
+
+        <!-- Algorithms Grid -->
+        <section class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Available Algorithms</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- K-Means Card -->
+                <div class="algorithm-card card-hover shadow-lg">
+                    <div class="h-2 bg-gradient-to-r from-pink-500 to-purple-600"></div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="badge badge-unsupervised">Unsupervised</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">K-Means Clustering</h3>
+                        <p class="text-gray-600 mb-6">
+                            Hard clustering algorithm that partitions data into K clusters by iteratively updating centroids 
+                            and reassigning points based on Euclidean distance.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-2">Key Features:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>✓ Custom dataset generation</li>
+                                <li>✓ Step-by-step iteration mode</li>
+                                <li>✓ Animated centroid updates</li>
+                                <li>✓ Distance calculations</li>
+                            </ul>
+                        </div>
+                        <a href="kmeans/" 
+                           class="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200">
+                            Explore K-Means →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KNN Card (Coming Soon) -->
+                <div class="algorithm-card card-hover shadow-lg opacity-75">
+                    <div class="h-2 bg-gradient-to-r from-blue-500 to-cyan-600"></div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="badge badge-supervised">Supervised</span>
+                            <span class="badge badge-coming-soon ml-2">Coming Soon</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">K-Nearest Neighbors</h3>
+                        <p class="text-gray-600 mb-6">
+                            Lazy learning algorithm that classifies data points based on the majority vote of their 
+                            K nearest neighbors using distance metrics.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-2">Planned Features:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>✓ Interactive point classification</li>
+                                <li>✓ Distance metric selection</li>
+                                <li>✓ Decision boundary visualization</li>
+                                <li>✓ K value comparison</li>
+                            </ul>
+                        </div>
+                        <button disabled
+                                class="block w-full text-center bg-gray-300 text-gray-500 font-semibold py-3 px-6 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Linear Regression Card (Coming Soon) -->
+                <div class="algorithm-card card-hover shadow-lg opacity-75">
+                    <div class="h-2 bg-gradient-to-r from-green-500 to-emerald-600"></div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="badge badge-supervised">Supervised</span>
+                            <span class="badge badge-coming-soon ml-2">Coming Soon</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Linear Regression</h3>
+                        <p class="text-gray-600 mb-6">
+                            Fundamental regression algorithm that fits a linear model to data using gradient descent 
+                            optimization to minimize mean squared error.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-2">Planned Features:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>✓ Gradient descent animation</li>
+                                <li>✓ Cost function visualization</li>
+                                <li>✓ Learning rate adjustment</li>
+                                <li>✓ Prediction overlay</li>
+                            </ul>
+                        </div>
+                        <button disabled
+                                class="block w-full text-center bg-gray-300 text-gray-500 font-semibold py-3 px-6 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PCA Card (Coming Soon) -->
+                <div class="algorithm-card card-hover shadow-lg opacity-75">
+                    <div class="h-2 bg-gradient-to-r from-yellow-500 to-orange-600"></div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="badge badge-unsupervised">Unsupervised</span>
+                            <span class="badge badge-coming-soon ml-2">Coming Soon</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">PCA</h3>
+                        <p class="text-gray-600 mb-6">
+                            Principal Component Analysis reduces dimensionality by projecting data onto directions 
+                            of maximum variance using eigenvector decomposition.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-2">Planned Features:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>✓ 3D to 2D projection animation</li>
+                                <li>✓ Variance explanation visualization</li>
+                                <li>✓ Principal component vectors</li>
+                                <li>✓ Scree plot</li>
+                            </ul>
+                        </div>
+                        <button disabled
+                                class="block w-full text-center bg-gray-300 text-gray-500 font-semibold py-3 px-6 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Logistic Regression Card (Coming Soon) -->
+                <div class="algorithm-card card-hover shadow-lg opacity-75">
+                    <div class="h-2 bg-gradient-to-r from-red-500 to-pink-600"></div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="badge badge-supervised">Supervised</span>
+                            <span class="badge badge-coming-soon ml-2">Coming Soon</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Logistic Regression</h3>
+                        <p class="text-gray-600 mb-6">
+                            Binary classification algorithm using sigmoid function to estimate probabilities 
+                            and create decision boundaries.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-2">Planned Features:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>✓ Decision boundary animation</li>
+                                <li>✓ Probability surface visualization</li>
+                                <li>✓ Gradient descent steps</li>
+                                <li>✓ Classification metrics</li>
+                            </ul>
+                        </div>
+                        <button disabled
+                                class="block w-full text-center bg-gray-300 text-gray-500 font-semibold py-3 px-6 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DBSCAN Card (Coming Soon) -->
+                <div class="algorithm-card card-hover shadow-lg opacity-75">
+                    <div class="h-2 bg-gradient-to-r from-indigo-500 to-blue-600"></div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="badge badge-unsupervised">Unsupervised</span>
+                            <span class="badge badge-coming-soon ml-2">Coming Soon</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">DBSCAN</h3>
+                        <p class="text-gray-600 mb-6">
+                            Density-based clustering algorithm that finds arbitrarily shaped clusters by grouping 
+                            points in high-density regions separated by low-density areas.
+                        </p>
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-2">Planned Features:</h4>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>✓ Epsilon neighborhood visualization</li>
+                                <li>✓ Core/border/noise point identification</li>
+                                <li>✓ Cluster formation animation</li>
+                                <li>✓ Parameter tuning</li>
+                            </ul>
+                        </div>
+                        <button disabled
+                                class="block w-full text-center bg-gray-300 text-gray-500 font-semibold py-3 px-6 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Use Section -->
+        <section class="max-w-4xl mx-auto mt-16">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">How to Use This Platform</h2>
+            <div class="bg-white rounded-lg shadow-md p-8">
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Choose an Algorithm</h3>
+                            <p class="text-gray-600">Select an algorithm card above to navigate to its interactive page.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Set Parameters</h3>
+                            <p class="text-gray-600">Adjust algorithm parameters like K value, learning rate, or epsilon using the controls.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mr-4">3</div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Generate or Add Data</h3>
+                            <p class="text-gray-600">Create random datasets or add custom data points by clicking on the canvas.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mr-4">4</div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Run & Visualize</h3>
+                            <p class="text-gray-600">Watch the algorithm work step-by-step or run to completion. Observe animations and read explanations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <p class="mb-2">ML Algorithm Visualizer</p>
+            <p class="text-sm text-gray-400">Built for educational purposes • Open source on GitHub</p>
+            <p class="text-sm text-gray-400 mt-4">Created by AhVir • 2025</p>
+        </div>
+    </footer>
+</body>
+</html>
